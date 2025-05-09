@@ -4,7 +4,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/NutriPocket/UserService/database"
 	"github.com/NutriPocket/UserService/test"
 	"github.com/NutriPocket/UserService/utils"
 	"github.com/gin-gonic/gin"
@@ -19,8 +18,6 @@ func TestMain(m *testing.M) {
 	gin.SetMode(gin.TestMode)
 
 	router = utils.SetupRouter()
-	database.ConnectDB()
-	defer database.Close()
 
 	code := m.Run()
 	test.TearDown("e2e")

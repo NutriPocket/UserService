@@ -25,8 +25,8 @@ func loadEnv() {
 
 func setupDB() {
 	database.ConnectDB()
-	defer database.Close()
-	gormDB, err := database.GetPoolConnection()
+	var err error
+	gormDB, err = database.GetPoolConnection()
 	if err != nil {
 		log.Panicf("Failed to connect to database: %v", err)
 	}
@@ -87,4 +87,5 @@ func Setup(testType string) {
 
 func TearDown(testType string) {
 	log.Infof("Tear down %s tests!\n", testType)
+	database.Close()
 }

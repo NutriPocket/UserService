@@ -71,7 +71,10 @@ func TestGetUsers(t *testing.T) {
 	t.Run("It should retrieve all the users in the table", func(t *testing.T) {
 		defer test.ClearUsers()
 		w := httptest.NewRecorder()
-		repository := repository.UserRepository{}
+		repository, err := repository.NewUserRepository(nil)
+		if err != nil {
+			t.Errorf("An error ocurred when creating the user repository: %v\n", err)
+		}
 
 		repository.CreateUser(&model.BaseUser{Username: "test1", Email: "test1@test.com", Password: "test1"})
 		repository.CreateUser(&model.BaseUser{Username: "test2", Email: "test2@test.com", Password: "test2"})
@@ -85,7 +88,7 @@ func TestGetUsers(t *testing.T) {
 		assert.Equal(t, http.StatusOK, w.Code, "Status code should be 200")
 
 		var data []model.User
-		err := json.Unmarshal(w.Body.Bytes(), &data)
+		err = json.Unmarshal(w.Body.Bytes(), &data)
 		if err != nil {
 			log.Fatal("The response body is not a []model.User parseable string, ", err)
 		}
@@ -164,7 +167,10 @@ func TestGetUser(t *testing.T) {
 		username := "test"
 		w := httptest.NewRecorder()
 
-		repository := repository.UserRepository{}
+		repository, err := repository.NewUserRepository(nil)
+		if err != nil {
+			t.Errorf("An error ocurred when creating the user repository: %v\n", err)
+		}
 
 		repository.CreateUser(&model.BaseUser{Username: testUser.Username, Email: testUser.Email, Password: "test"})
 		repository.CreateUser(&model.BaseUser{Username: "test2", Email: "test2@test.com", Password: "test2"})
@@ -179,7 +185,7 @@ func TestGetUser(t *testing.T) {
 		assert.Equal(t, http.StatusOK, w.Code, "Status code should be 200")
 
 		var data model.User
-		err := json.Unmarshal(w.Body.Bytes(), &data)
+		err = json.Unmarshal(w.Body.Bytes(), &data)
 		if err != nil {
 			log.Fatal("The response body is not a model.User parseable string, ", err)
 		}
