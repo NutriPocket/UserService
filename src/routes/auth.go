@@ -4,9 +4,9 @@ package routes
 import (
 	"net/http"
 
-	controller "github.com/MaxiOtero6/go-auth-rest/controller/users"
-	"github.com/MaxiOtero6/go-auth-rest/model"
-	"github.com/MaxiOtero6/go-auth-rest/service"
+	controller "github.com/NutriPocket/UserService/controller/users"
+	"github.com/NutriPocket/UserService/model"
+	"github.com/NutriPocket/UserService/service"
 	"github.com/gin-gonic/gin"
 )
 

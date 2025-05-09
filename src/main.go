@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/MaxiOtero6/go-auth-rest/database"
-	"github.com/MaxiOtero6/go-auth-rest/utils"
+	"github.com/NutriPocket/UserService/database"
+	"github.com/NutriPocket/UserService/utils"
 	"github.com/joho/godotenv"
 	"github.com/op/go-logging"
 )

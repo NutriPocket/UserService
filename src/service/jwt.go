@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/MaxiOtero6/go-auth-rest/model"
-	"github.com/MaxiOtero6/go-auth-rest/repository"
+	"github.com/NutriPocket/UserService/model"
+	"github.com/NutriPocket/UserService/repository"
 	"github.com/golang-jwt/jwt/v5"
 )
 

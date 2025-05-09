@@ -4,8 +4,8 @@ package middleware
 import (
 	"strings"
 
-	"github.com/MaxiOtero6/go-auth-rest/model"
-	"github.com/MaxiOtero6/go-auth-rest/service"
+	"github.com/NutriPocket/UserService/model"
+	"github.com/NutriPocket/UserService/service"
 	"github.com/gin-gonic/gin"
 )
 

@@ -3,7 +3,7 @@ package test
 import (
 	"os"
 
-	"github.com/MaxiOtero6/go-auth-rest/database"
+	"github.com/NutriPocket/UserService/database"
 	"github.com/joho/godotenv"
 	"github.com/op/go-logging"
 	"gorm.io/gorm"

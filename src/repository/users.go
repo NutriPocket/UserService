@@ -4,8 +4,8 @@ package repository
 import (
 	"errors"
 
-	"github.com/MaxiOtero6/go-auth-rest/database"
-	"github.com/MaxiOtero6/go-auth-rest/model"
+	"github.com/NutriPocket/UserService/database"
+	"github.com/NutriPocket/UserService/model"
 	"github.com/go-sql-driver/mysql"
 )
 

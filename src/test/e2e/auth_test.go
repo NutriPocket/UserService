@@ -8,10 +8,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/MaxiOtero6/go-auth-rest/database"
-	"github.com/MaxiOtero6/go-auth-rest/model"
-	"github.com/MaxiOtero6/go-auth-rest/service"
-	"github.com/MaxiOtero6/go-auth-rest/test"
+	"github.com/NutriPocket/UserService/database"
+	"github.com/NutriPocket/UserService/model"
+	"github.com/NutriPocket/UserService/service"
+	"github.com/NutriPocket/UserService/test"
 	"github.com/stretchr/testify/assert"
 )
 

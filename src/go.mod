@@ -1,4 +1,4 @@
-module github.com/MaxiOtero6/go-auth-rest
+module github.com/NutriPocket/UserService
 
 go 1.24.3
 

@@ -4,7 +4,7 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/MaxiOtero6/go-auth-rest/model"
+	"github.com/NutriPocket/UserService/model"
 	"github.com/gin-gonic/gin"
 	"github.com/op/go-logging"
 )

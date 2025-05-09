@@ -7,10 +7,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/MaxiOtero6/go-auth-rest/model"
-	"github.com/MaxiOtero6/go-auth-rest/repository"
-	"github.com/MaxiOtero6/go-auth-rest/service"
-	"github.com/MaxiOtero6/go-auth-rest/test"
+	"github.com/NutriPocket/UserService/model"
+	"github.com/NutriPocket/UserService/repository"
+	"github.com/NutriPocket/UserService/service"
+	"github.com/NutriPocket/UserService/test"
 	"github.com/stretchr/testify/assert"
 )
 
