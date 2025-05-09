@@ -3,7 +3,6 @@ package e2e_test
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -16,7 +15,10 @@ import (
 )
 
 func TestGetUsers(t *testing.T) {
-	jwtService := service.NewJWTService(nil)
+	jwtService, err := service.NewJWTService(nil)
+	if err != nil {
+		log.Fatalf("An error ocurred when creating the JWT service: %v\n", err)
+	}
 
 	testUser := model.User{
 		Username: "test", Email: "test@test.com",
@@ -97,7 +99,10 @@ func TestGetUsers(t *testing.T) {
 }
 
 func TestGetUser(t *testing.T) {
-	jwtService := service.NewJWTService(nil)
+	jwtService, err := service.NewJWTService(nil)
+	if err != nil {
+		log.Fatalf("An error ocurred when creating the JWT service: %v\n", err)
+	}
 
 	testUser := model.User{
 		Username: "test", Email: "test@test.com",
@@ -141,7 +146,7 @@ func TestGetUser(t *testing.T) {
 		router.ServeHTTP(w, req)
 
 		assert.Equal(t, http.StatusNotFound, w.Code, "Status code should be 404")
-		log.Println(w.Body.String())
+
 		var data map[string]interface{}
 		err := json.Unmarshal(w.Body.Bytes(), &data)
 		if err != nil {

@@ -18,7 +18,11 @@ func UsersRoutes(router *gin.Engine) {
 }
 
 func getUsers(c *gin.Context) {
-	service := service.NewUserService(nil)
+	service, err := service.NewUserService(nil)
+	if err != nil {
+		c.Error(err)
+		return
+	}
 
 	users, err := service.GetAllUsers()
 
@@ -37,7 +41,11 @@ func getUser(c *gin.Context) {
 
 	controller.ValidateString(username, "username")
 
-	service := service.NewUserService(nil)
+	service, err := service.NewUserService(nil)
+	if err != nil {
+		c.Error(err)
+		return
+	}
 
 	user, err := service.GetUser(username)
 

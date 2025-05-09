@@ -13,14 +13,18 @@ type UserService struct {
 	repository repository.IUserRepository
 }
 
-func NewUserService(userRepository *repository.IUserRepository) UserService {
-	var repo repository.IUserRepository = &repository.UserRepository{}
+func NewUserService(userRepository repository.IUserRepository) (*UserService, error) {
+	var err error
 
-	if userRepository != nil {
-		repo = *userRepository
+	if userRepository == nil {
+		userRepository, err = repository.NewUserRepository(nil)
+		if err != nil {
+			log.Errorf("Failed to create user repository: %v", err)
+			return nil, err
+		}
 	}
 
-	return UserService{repository: repo}
+	return &UserService{repository: userRepository}, nil
 }
 
 func (service *UserService) EncodePassword(password string) string {
