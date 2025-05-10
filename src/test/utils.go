@@ -41,7 +41,7 @@ func setupDB() {
 
 	if err := gormDB.Exec(`
 		CREATE TABLE IF NOT EXISTS users (
-			id SERIAL PRIMARY KEY,
+			id VARCHAR(36) PRIMARY KEY,
 			username VARCHAR(100) UNIQUE NOT NULL,
 			email VARCHAR(100) UNIQUE NOT NULL,
 			password VARCHAR(100) NOT NULL,

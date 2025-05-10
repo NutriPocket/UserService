@@ -159,8 +159,8 @@ func TestPostRegister(t *testing.T) {
 
 		res := gormDB.Exec(
 			`
-				INSERT INTO users (username, email, password) 
-				VALUES (?, ?, ?)
+				INSERT INTO users (id, username, email, password) 
+				VALUES ('test-uuid', ?, ?, ?)
 			`,
 			"test", "test@test.com", "test",
 		)
@@ -357,8 +357,8 @@ func TestPostRegister(t *testing.T) {
 
 		res := gormDB.Exec(
 			`
-				INSERT INTO users (username, email, password) 
-				VALUES (?, ?, ?)
+				INSERT INTO users (id, username, email, password) 
+				VALUES ('test-uuid', ?, ?, ?)
 			`,
 			"test", "test@test.com", "test",
 		)
@@ -418,8 +418,8 @@ func TestPostLogin(t *testing.T) {
 
 	res := gormDB.Exec(
 		`
-			INSERT INTO users (username, email, password) 
-			VALUES (?, ?, ?)
+			INSERT INTO users (id, username, email, password) 
+			VALUES ('test-uuid', ?, ?, ?)
 		`,
 		"test", "test@test.com", encodedPassword,
 	)
