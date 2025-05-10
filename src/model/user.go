@@ -10,6 +10,7 @@ type BaseUser struct {
 
 // User is a struct that contains the user data that will be sent to the client
 type User struct {
+	Id       string `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 }
