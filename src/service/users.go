@@ -46,7 +46,7 @@ func (service *UserService) Login(userData *model.LoginUser) (model.User, error)
 		return model.User{}, err
 	}
 
-	if savedUser == (model.BaseUser{}) {
+	if savedUser == (model.SavedUser{}) {
 		return model.User{}, &model.AuthenticationError{
 			Title:  "Credentials don't match",
 			Detail: "User identification or password are wrong, please try again",
@@ -62,7 +62,7 @@ func (service *UserService) Login(userData *model.LoginUser) (model.User, error)
 		}
 	}
 
-	return model.User{Username: savedUser.Username, Email: savedUser.Email}, nil
+	return model.User{Id: savedUser.Id, Username: savedUser.Username, Email: savedUser.Email}, nil
 }
 
 func (service *UserService) GetAllUsers() ([]model.User, error) {

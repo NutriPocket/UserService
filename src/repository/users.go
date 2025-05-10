@@ -23,7 +23,7 @@ type IUserRepository interface {
 	// GetUserWithPassword gets a user with the password from the database.
 	// emailOrUsername is the email or username of the user to get.
 	// It returns the user and an error if the operation fails.
-	GetUserWithPassword(emailOrUsername string) (model.BaseUser, error)
+	GetUserWithPassword(emailOrUsername string) (model.SavedUser, error)
 	// GetAllUsers gets all the users from the database.
 	// It returns all the users and an error if the operation fails.
 	GetAllUsers() ([]model.User, error)
@@ -91,13 +91,13 @@ func (r *UserRepository) GetUser(username string) (model.User, error) {
 	return user, nil
 }
 
-func (r *UserRepository) GetUserWithPassword(emailOrUsername string) (model.BaseUser, error) {
-	var user model.BaseUser
+func (r *UserRepository) GetUserWithPassword(emailOrUsername string) (model.SavedUser, error) {
+	var user model.SavedUser
 
 	res := r.db.Raw("SELECT id, username, email, password FROM users WHERE username = ? OR email = ?", emailOrUsername, emailOrUsername).Scan(&user)
 
 	if res.Error != nil {
-		return model.BaseUser{}, res.Error
+		return model.SavedUser{}, res.Error
 	}
 
 	return user, nil

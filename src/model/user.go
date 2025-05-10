@@ -20,3 +20,9 @@ type LoginUser struct {
 	EmailOrUsername string
 	Password        string
 }
+
+// SavedUser is a struct that combines BaseUser fields with an additional Id field
+type SavedUser struct {
+	BaseUser
+	Id string
+}
