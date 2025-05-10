@@ -95,9 +95,12 @@ func TestGetUsers(t *testing.T) {
 
 		assert.NotEmpty(t, data, "If the users table is not empty, it should return a non-empty array")
 		assert.Len(t, data, 3, "The length of the array should be 3")
-		assert.Equal(t, model.User{Username: "test3", Email: "test3@test.com"}, data[0])
-		assert.Equal(t, model.User{Username: "test2", Email: "test2@test.com"}, data[1])
-		assert.Equal(t, model.User{Username: "test1", Email: "test1@test.com"}, data[2])
+		assert.Equal(t, "test3", data[0].Username)
+		assert.Equal(t, "test2", data[1].Username)
+		assert.Equal(t, "test1", data[2].Username)
+		assert.Equal(t, "test3@test.com", data[0].Email)
+		assert.Equal(t, "test2@test.com", data[1].Email)
+		assert.Equal(t, "test1@test.com", data[2].Email)
 	})
 }
 
@@ -190,6 +193,7 @@ func TestGetUser(t *testing.T) {
 			log.Fatal("The response body is not a model.User parseable string, ", err)
 		}
 
-		assert.Equal(t, testUser, data)
+		assert.Equal(t, testUser.Username, data.Username)
+		assert.Equal(t, testUser.Email, data.Email)
 	})
 }

@@ -10,6 +10,7 @@ type BaseUser struct {
 
 // User is a struct that contains the user data that will be sent to the client
 type User struct {
+	Id       string `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 }
@@ -18,4 +19,10 @@ type User struct {
 type LoginUser struct {
 	EmailOrUsername string
 	Password        string
+}
+
+// SavedUser is a struct that combines BaseUser fields with an additional Id field
+type SavedUser struct {
+	BaseUser
+	Id string
 }
