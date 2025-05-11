@@ -30,36 +30,6 @@ func setupDB() {
 	if err != nil {
 		log.Panicf("Failed to connect to database: %v", err)
 	}
-
-	if err := gormDB.Exec("CREATE DATABASE IF NOT EXISTS test").Error; err != nil {
-		log.Fatal(err)
-	}
-
-	if err := gormDB.Exec("USE test").Error; err != nil {
-		log.Fatal(err)
-	}
-
-	if err := gormDB.Exec(`
-		CREATE TABLE IF NOT EXISTS users (
-			id VARCHAR(36) PRIMARY KEY,
-			username VARCHAR(100) UNIQUE NOT NULL,
-			email VARCHAR(100) UNIQUE NOT NULL,
-			password VARCHAR(100) NOT NULL,
-			created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6)
-		)
-	`).Error; err != nil {
-		log.Fatal(err)
-	}
-
-	if err := gormDB.Exec(`
-		CREATE TABLE IF NOT EXISTS jwt_blacklist (
-			signature VARCHAR(100) PRIMARY KEY,
-			expires_at TIMESTAMP NOT NULL,
-			INDEX idx_expires_at (expires_at)
-		)
-	`).Error; err != nil {
-		log.Fatal(err)
-	}
 }
 
 func ClearUsers() {
