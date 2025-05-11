@@ -1,5 +1,4 @@
-# go-auth-rest
-Simple auth REST-like API in go using JWT, Gin and MySQL
+# User Service
 
 Routes:
 
