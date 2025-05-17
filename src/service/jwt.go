@@ -54,7 +54,7 @@ func (service *JWTService) Sign(payload model.User) (string, error) {
 	claim := model.JWTPayload{
 		Payload: payload,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(nowUtc.Add(time.Minute * 5)),
+			ExpiresAt: jwt.NewNumericDate(nowUtc.Add(time.Hour * 24 * 15)),
 			IssuedAt:  jwt.NewNumericDate(nowUtc),
 		},
 	}
