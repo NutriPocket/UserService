@@ -102,6 +102,105 @@ func TestGetUsers(t *testing.T) {
 		assert.Equal(t, "test2@test.com", data[1].Email)
 		assert.Equal(t, "test1@test.com", data[2].Email)
 	})
+
+	t.Run("It should retrieve all the users in the table if searchUsername is an empty string", func(t *testing.T) {
+		defer test.ClearUsers()
+		w := httptest.NewRecorder()
+		repository, err := repository.NewUserRepository(nil)
+		if err != nil {
+			t.Errorf("An error ocurred when creating the user repository: %v\n", err)
+		}
+
+		repository.CreateUser(&model.BaseUser{Username: "test1", Email: "test1@test.com", Password: "test1"})
+		repository.CreateUser(&model.BaseUser{Username: "test2", Email: "test2@test.com", Password: "test2"})
+		repository.CreateUser(&model.BaseUser{Username: "test3", Email: "test3@test.com", Password: "test3"})
+
+		req, _ := http.NewRequest(http.MethodGet, "/users/?searchUsername=", nil)
+		req.Header.Add("Authorization", bearerToken)
+
+		router.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusOK, w.Code, "Status code should be 200")
+
+		var data []model.User
+		err = json.Unmarshal(w.Body.Bytes(), &data)
+		if err != nil {
+			log.Fatal("The response body is not a []model.User parseable string, ", err)
+		}
+
+		assert.NotEmpty(t, data, "If the users table is not empty, it should return a non-empty array")
+		assert.Len(t, data, 3, "The length of the array should be 3")
+		assert.Equal(t, "test3", data[0].Username)
+		assert.Equal(t, "test2", data[1].Username)
+		assert.Equal(t, "test1", data[2].Username)
+		assert.Equal(t, "test3@test.com", data[0].Email)
+		assert.Equal(t, "test2@test.com", data[1].Email)
+		assert.Equal(t, "test1@test.com", data[2].Email)
+	})
+
+	t.Run("It should retrieve only the users in the table that matchs searchUsername param partially", func(t *testing.T) {
+		defer test.ClearUsers()
+		w := httptest.NewRecorder()
+		repository, err := repository.NewUserRepository(nil)
+		if err != nil {
+			t.Errorf("An error ocurred when creating the user repository: %v\n", err)
+		}
+
+		repository.CreateUser(&model.BaseUser{Username: "test1", Email: "test1@test.com", Password: "test1"})
+		repository.CreateUser(&model.BaseUser{Username: "jorge", Email: "test2@test.com", Password: "test2"})
+		repository.CreateUser(&model.BaseUser{Username: "pedro", Email: "test3@test.com", Password: "test3"})
+
+		req, _ := http.NewRequest(http.MethodGet, "/users/?searchUsername=o", nil)
+		req.Header.Add("Authorization", bearerToken)
+
+		router.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusOK, w.Code, "Status code should be 200")
+
+		var data []model.User
+		err = json.Unmarshal(w.Body.Bytes(), &data)
+		if err != nil {
+			log.Fatal("The response body is not a []model.User parseable string, ", err)
+		}
+
+		assert.NotEmpty(t, data, "If the users table is not empty, it should return a non-empty array")
+		assert.Len(t, data, 2, "The length of the array should be 2")
+		assert.Equal(t, "pedro", data[0].Username)
+		assert.Equal(t, "jorge", data[1].Username)
+		assert.Equal(t, "test3@test.com", data[0].Email)
+		assert.Equal(t, "test2@test.com", data[1].Email)
+	})
+
+	t.Run("It should retrieve only the users in the table that matchs searchUsername param in the string order", func(t *testing.T) {
+		defer test.ClearUsers()
+		w := httptest.NewRecorder()
+		repository, err := repository.NewUserRepository(nil)
+		if err != nil {
+			t.Errorf("An error ocurred when creating the user repository: %v\n", err)
+		}
+
+		repository.CreateUser(&model.BaseUser{Username: "egroj", Email: "test1@test.com", Password: "test1"})
+		repository.CreateUser(&model.BaseUser{Username: "jorge", Email: "test2@test.com", Password: "test2"})
+		repository.CreateUser(&model.BaseUser{Username: "pedro", Email: "test3@test.com", Password: "test3"})
+
+		req, _ := http.NewRequest(http.MethodGet, "/users/?searchUsername=jorge", nil)
+		req.Header.Add("Authorization", bearerToken)
+
+		router.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusOK, w.Code, "Status code should be 200")
+
+		var data []model.User
+		err = json.Unmarshal(w.Body.Bytes(), &data)
+		if err != nil {
+			log.Fatal("The response body is not a []model.User parseable string, ", err)
+		}
+
+		assert.NotEmpty(t, data, "If the users table is not empty, it should return a non-empty array")
+		assert.Len(t, data, 1, "The length of the array should be 1")
+		assert.Equal(t, "jorge", data[0].Username)
+		assert.Equal(t, "test2@test.com", data[0].Email)
+	})
 }
 
 func TestGetUser(t *testing.T) {
