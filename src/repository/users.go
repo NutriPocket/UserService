@@ -26,7 +26,7 @@ type IUserRepository interface {
 	GetUserWithPassword(emailOrUsername string) (model.SavedUser, error)
 	// GetAllUsers gets all the users from the database.
 	// It returns all the users and an error if the operation fails.
-	GetAllUsers() ([]model.User, error)
+	GetAllUsers(params model.GetUsersParams) ([]model.User, error)
 }
 
 type UserRepository struct {
@@ -103,10 +103,18 @@ func (r *UserRepository) GetUserWithPassword(emailOrUsername string) (model.Save
 	return user, nil
 }
 
-func (r *UserRepository) GetAllUsers() ([]model.User, error) {
-	var users []model.User
+func (r *UserRepository) GetAllUsers(params model.GetUsersParams) ([]model.User, error) {
+	var users []model.User = make([]model.User, 0)
 
-	res := r.db.Raw("SELECT id, username, email FROM users ORDER BY created_at DESC").Scan(&users)
+	params.SearchUsername = "%" + params.SearchUsername + "%"
+
+	res := r.db.Raw(`
+		SELECT id, username, email 
+		FROM users 
+		WHERE username LIKE ? 
+		ORDER BY created_at DESC`,
+		params.SearchUsername,
+	).Scan(&users)
 
 	if res.Error != nil {
 		return []model.User{}, res.Error
