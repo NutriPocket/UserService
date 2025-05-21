@@ -65,8 +65,8 @@ func (service *UserService) Login(userData *model.LoginUser) (model.User, error)
 	return model.User{Id: savedUser.Id, Username: savedUser.Username, Email: savedUser.Email}, nil
 }
 
-func (service *UserService) GetAllUsers() ([]model.User, error) {
-	return service.repository.GetAllUsers()
+func (service *UserService) GetAllUsers(params model.GetUsersParams) ([]model.User, error) {
+	return service.repository.GetAllUsers(params)
 }
 
 func (service *UserService) GetUser(username string) (model.User, error) {

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	controller "github.com/NutriPocket/UserService/controller/users"
+	"github.com/NutriPocket/UserService/model"
 	"github.com/NutriPocket/UserService/service"
 	"github.com/gin-gonic/gin"
 )
@@ -18,13 +19,17 @@ func UsersRoutes(router *gin.Engine) {
 }
 
 func getUsers(c *gin.Context) {
+	var params model.GetUsersParams
+
+	params.SearchUsername = c.Query("searchUsername")
+
 	service, err := service.NewUserService(nil)
 	if err != nil {
 		c.Error(err)
 		return
 	}
 
-	users, err := service.GetAllUsers()
+	users, err := service.GetAllUsers(params)
 
 	if err != nil {
 		c.Error(err)
