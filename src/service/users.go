@@ -82,3 +82,21 @@ func (service *UserService) GetUser(username string) (model.User, error) {
 
 	return user, nil
 }
+
+func (service *UserService) UpdateUser(username string, userData *model.EditableUser) (model.User, error) {
+	user, err := service.repository.GetUser(username)
+
+	if err != nil {
+		return user, err
+	}
+
+	if user == (model.User{}) {
+		return user, &model.NotFoundError{Title: "User not found", Detail: "The user with the username " + username + " was not found"}
+	}
+
+	if userData.Picture != "" {
+		user.EditableUser.Picture = userData.Picture
+	}
+
+	return service.repository.UpdateUser(user.Id, userData)
+}

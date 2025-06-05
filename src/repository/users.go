@@ -27,6 +27,8 @@ type IUserRepository interface {
 	// GetAllUsers gets all the users from the database.
 	// It returns all the users and an error if the operation fails.
 	GetAllUsers(params model.GetUsersParams) ([]model.User, error)
+
+	UpdateUser(userId string, userData *model.EditableUser) (model.User, error)
 }
 
 type UserRepository struct {
@@ -82,7 +84,7 @@ func (r *UserRepository) CreateUser(userData *model.BaseUser) (model.User, error
 func (r *UserRepository) GetUser(username string) (model.User, error) {
 	var user model.User
 
-	res := r.db.Raw("SELECT id, username, email FROM users WHERE username = ?", username).Scan(&user)
+	res := r.db.Raw("SELECT id, username, email, picture FROM users WHERE username = ?", username).Scan(&user)
 
 	if res.Error != nil {
 		return model.User{}, res.Error
@@ -109,7 +111,7 @@ func (r *UserRepository) GetAllUsers(params model.GetUsersParams) ([]model.User,
 	params.SearchUsername = "%" + params.SearchUsername + "%"
 
 	res := r.db.Raw(`
-		SELECT id, username, email 
+		SELECT id, username, email, picture
 		FROM users 
 		WHERE username LIKE ? 
 		ORDER BY created_at DESC`,
@@ -121,4 +123,22 @@ func (r *UserRepository) GetAllUsers(params model.GetUsersParams) ([]model.User,
 	}
 
 	return users, nil
+}
+
+func (r *UserRepository) UpdateUser(userId string, userData *model.EditableUser) (model.User, error) {
+	var user model.User
+
+	res := r.db.Exec("UPDATE users SET picture = ? WHERE id = ?", userData.Picture, userId)
+
+	if res.Error != nil {
+		return model.User{}, res.Error
+	}
+
+	res = r.db.Raw("SELECT id, username, email, picture FROM users WHERE id = ?", userId).Scan(&user)
+
+	if res.Error != nil {
+		return model.User{}, res.Error
+	}
+
+	return user, nil
 }

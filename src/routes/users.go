@@ -15,6 +15,7 @@ func UsersRoutes(router *gin.Engine) {
 		users_routes := router.Group("/users")
 		users_routes.GET("/", getUsers)
 		users_routes.GET("/:username", getUser)
+		users_routes.PATCH("/:username", updateUser)
 	}
 }
 
@@ -60,4 +61,34 @@ func getUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, user)
+}
+
+func updateUser(c *gin.Context) {
+	username := c.Param("username")
+
+	controller := controller.UserController{}
+
+	controller.ValidateString(username, "username")
+
+	var user *model.EditableUser
+
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.Error(err)
+		return
+	}
+
+	service, err := service.NewUserService(nil)
+	if err != nil {
+		c.Error(err)
+		return
+	}
+
+	ret, err := service.UpdateUser(username, user)
+
+	if err != nil {
+		c.Error(err)
+		return
+	}
+
+	c.JSON(http.StatusOK, ret)
 }
